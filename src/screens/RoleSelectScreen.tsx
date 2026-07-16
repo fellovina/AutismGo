@@ -31,7 +31,7 @@ export default function RoleSelectScreen() {
       <Text style={styles.subtitle}>This helps us set up the right experience for you.</Text>
 
       <TouchableOpacity
-        style={styles.card}
+        style={[styles.card, styles.autisticCard]}
         onPress={() => chooseRole('autistic_user')}
         disabled={loading !== null}
       >
@@ -39,6 +39,7 @@ export default function RoleSelectScreen() {
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
+            <Text style={styles.cardIcon}>*</Text>
             <Text style={styles.cardTitle}>I'm an autistic individual</Text>
             <Text style={styles.cardSubtitle}>Track your own sensory patterns and get alerts</Text>
           </>
@@ -46,7 +47,7 @@ export default function RoleSelectScreen() {
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.card}
+        style={[styles.card, styles.caregiverCard]}
         onPress={() => chooseRole('caregiver')}
         disabled={loading !== null}
       >
@@ -54,6 +55,7 @@ export default function RoleSelectScreen() {
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
+            <Text style={styles.cardIcon}>+</Text>
             <Text style={styles.cardTitle}>I'm a caregiver</Text>
             <Text style={styles.cardSubtitle}>Support someone else using the app</Text>
           </>
@@ -79,4 +81,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: { ...typography.label, fontSize: 17, marginBottom: 4 },
   cardSubtitle: { ...typography.subtitle, fontSize: 13 },
+  autisticCard: { backgroundColor: colors.lavender, borderColor: '#C9BEFF' },
+  caregiverCard: { backgroundColor: colors.mint, borderColor: '#A9E8CC' },
+  cardIcon: { fontSize: 24, color: colors.primary, marginBottom: 4 },
 });

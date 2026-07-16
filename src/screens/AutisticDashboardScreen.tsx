@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
     color: colors.primary,
     textAlign: 'center',
     marginVertical: spacing.md,
+    backgroundColor: colors.lavender,
+    borderRadius: 18,
+    paddingVertical: spacing.md,
+    borderWidth: 1,
+    borderColor: '#C9BEFF',
   },
   placeholder: { ...typography.subtitle, textAlign: 'center', marginVertical: spacing.lg },
   button: {

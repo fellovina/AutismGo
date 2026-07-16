@@ -1,0 +1,18 @@
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../navigation/RootNavigator';
+import { RecoveryIcon } from '../features/recovery/data';
+import { RecoveryScreen } from '../features/recovery/RecoveryUI';
+import { colors, spacing, typography } from '../theme/colors';
+
+type Props=NativeStackScreenProps<AppStackParamList,'RecoverySession'>;
+const activities: { title:string; description:string; icon:RecoveryIcon; color:string; route:'DeepBreathing'|'CalmAudios'|'GroundingExercise'|'SafeZone' }[]=[
+  {title:'Deep Breathing',description:'Slow, guided breathing',icon:'weather-windy',color:colors.lavender,route:'DeepBreathing'},
+  {title:'Listen to Audios',description:'Choose from 5 calming audio slots',icon:'headphones',color:colors.sky,route:'CalmAudios'},
+  {title:'Find a Quiet Space',description:'Open the Safe Zone page',icon:'home-heart',color:colors.mint,route:'SafeZone'},
+  {title:'Grounding Exercise',description:'Use your five senses',icon:'hand-heart-outline',color:colors.sunshine,route:'GroundingExercise'},
+];
+export default function RecoverySessionScreen({navigation}:Props){return <RecoveryScreen title="Recovery Session" onBack={()=>navigation.goBack()}><Text style={styles.title}>Choose recovery activity</Text><Text style={styles.copy}>Pick the support that feels best right now.</Text><View style={styles.list}>{activities.map(item=><Pressable key={item.title} style={({pressed})=>[styles.card,pressed&&styles.pressed]} onPress={()=>navigation.navigate(item.route)}><View style={[styles.icon,{backgroundColor:item.color}]}><MaterialCommunityIcons name={item.icon} size={30} color={colors.primary}/></View><View style={styles.cardText}><Text style={styles.cardTitle}>{item.title}</Text><Text style={styles.description}>{item.description}</Text></View><MaterialCommunityIcons name="chevron-right" size={25} color={colors.textMuted}/></Pressable>)}</View><Pressable style={({pressed})=>[styles.ai,pressed&&styles.pressed]} onPress={()=>navigation.navigate('AIAssistant',{recoveryMode:true})}><View style={styles.aiIcon}><MaterialCommunityIcons name="robot-outline" size={29} color="#FFFFFF"/></View><View style={styles.cardText}><Text style={styles.aiTitle}>Talk to AI</Text><Text style={styles.aiCopy}>Coming soon</Text></View><MaterialCommunityIcons name="chevron-right" size={25} color="#FFFFFF"/></Pressable></RecoveryScreen>}
+const styles=StyleSheet.create({title:{...typography.title,marginTop:spacing.sm},copy:{...typography.subtitle,fontSize:17,lineHeight:24,marginTop:spacing.sm},list:{gap:spacing.md,marginTop:spacing.xl},card:{minHeight:88,flexDirection:'row',alignItems:'center',gap:spacing.md,padding:spacing.md,borderRadius:20,backgroundColor:colors.surface,borderWidth:1,borderColor:'#E3EAF3'},icon:{width:56,height:56,borderRadius:18,alignItems:'center',justifyContent:'center'},cardText:{flex:1},cardTitle:{...typography.label,fontSize:17},description:{...typography.subtitle,fontSize:14,marginTop:4},pressed:{opacity:.72,transform:[{scale:.99}]},ai:{minHeight:88,marginTop:spacing.md,flexDirection:'row',alignItems:'center',gap:spacing.md,padding:spacing.md,borderRadius:20,backgroundColor:colors.primary},aiIcon:{width:56,height:56,borderRadius:18,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(255,255,255,.18)'},aiTitle:{...typography.label,fontSize:17,color:'#FFFFFF'},aiCopy:{...typography.subtitle,fontSize:14,color:'#E9E3FF',marginTop:4}});

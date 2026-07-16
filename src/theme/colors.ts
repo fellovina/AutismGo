@@ -2,17 +2,22 @@
 // colors since this app is designed for sensory-sensitive users.
 
 export const colors = {
-  background: '#F7F9FB',
+  background: '#F1F7FF',
   surface: '#FFFFFF',
-  primary: '#5B8A9A',      // muted teal-blue
-  primaryDark: '#446E7C',
-  secondary: '#8FB9A8',    // soft sage green
-  text: '#2D3436',
-  textMuted: '#6B7280',
-  border: '#E2E8EC',
-  error: '#C97575',        // soft red, not harsh
-  chipBackground: '#EDF2F4',
-  chipSelected: '#5B8A9A',
+  primary: '#5B3FD1',
+  primaryDark: '#4329AA',
+  secondary: '#15A6A6',
+  text: '#1F2340',
+  textMuted: '#5E6480',
+  border: '#C8D7F0',
+  error: '#C83D62',
+  chipBackground: '#E7E1FF',
+  chipSelected: '#5B3FD1',
+  lavender: '#E9E3FF',
+  sky: '#DDF2FF',
+  mint: '#DDF8ED',
+  sunshine: '#FFF1B8',
+  coral: '#FFE0E5',
 };
 
 export const spacing = {

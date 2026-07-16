@@ -23,7 +23,7 @@ export default function CaregiverDashboardScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, padding: spacing.lg, justifyContent: 'center' },
   title: { ...typography.title, marginBottom: spacing.md, textAlign: 'center' },
-  placeholder: { ...typography.subtitle, textAlign: 'center', marginVertical: spacing.lg },
+  placeholder: { ...typography.subtitle, textAlign: 'center', marginVertical: spacing.lg, backgroundColor: colors.mint, borderRadius: 18, padding: spacing.lg, borderWidth: 1, borderColor: '#A9E8CC' },
   button: {
     backgroundColor: colors.error,
     paddingVertical: 14,

@@ -13,6 +13,7 @@ import { colors, typography, spacing } from '../theme/colors';
 import { useAuth } from '../context/AuthContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigation/RootNavigator';
+import PasswordInput from '../components/PasswordInput';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -55,12 +56,12 @@ export default function LoginScreen({ navigation }: Props) {
       />
 
       <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
+      <PasswordInput
         placeholder="Your password"
-        secureTextEntry
+        placeholderTextColor={colors.textMuted}
         value={password}
         onChangeText={setPassword}
+        textContentType="password"
       />
 
       {error && <Text style={styles.error}>{error}</Text>}
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
+    color: colors.text,
   },
   error: { color: colors.error, marginTop: spacing.md },
   button: {

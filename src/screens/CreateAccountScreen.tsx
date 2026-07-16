@@ -8,11 +8,13 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import { colors, typography, spacing } from '../theme/colors';
 import { useAuth } from '../context/AuthContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigation/RootNavigator';
+import PasswordInput from '../components/PasswordInput';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'CreateAccount'>;
 
@@ -41,7 +43,7 @@ export default function CreateAccountScreen({ navigation }: Props) {
     }
 
     setLoading(true);
-    const { error: signUpError } = await signUp(email.trim(), password);
+    const { error: signUpError, needsEmailConfirmation } = await signUp(email.trim(), password);
     setLoading(false);
 
     if (signUpError) {
@@ -49,8 +51,17 @@ export default function CreateAccountScreen({ navigation }: Props) {
       return;
     }
 
-    // RootNavigator will automatically move to RoleSelect once
-    // it detects a session with no role set yet.
+    if (needsEmailConfirmation) {
+      Alert.alert(
+        'Check your email',
+        `We sent a verification link to ${email.trim()}. Open it, then come back here and log in.`,
+        [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
+      );
+      return;
+    }
+
+    // No confirmation required — RootNavigator will automatically move to
+    // RoleSelect once it detects the new session.
   };
 
   return (
@@ -72,21 +83,21 @@ export default function CreateAccountScreen({ navigation }: Props) {
       />
 
       <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
+      <PasswordInput
         placeholder="At least 6 characters"
-        secureTextEntry
+        placeholderTextColor={colors.textMuted}
         value={password}
         onChangeText={setPassword}
+        textContentType="newPassword"
       />
 
       <Text style={styles.label}>Confirm Password</Text>
-      <TextInput
-        style={styles.input}
+      <PasswordInput
         placeholder="Re-enter your password"
-        secureTextEntry
+        placeholderTextColor={colors.textMuted}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
+        textContentType="newPassword"
       />
 
       {error && <Text style={styles.error}>{error}</Text>}
@@ -123,6 +134,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
+    color: colors.text,
   },
   error: { color: colors.error, marginTop: spacing.md },
   button: {

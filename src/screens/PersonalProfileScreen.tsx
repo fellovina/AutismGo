@@ -51,26 +51,35 @@ export default function PersonalProfileScreen({ onComplete }: { onComplete: () =
     if (!session?.user) return;
 
     setSaving(true);
+    try {
+      const { data: updatedProfile, error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          full_name: fullName.trim(),
+          age: ageNumber,
+          invite_code: generateInviteCode(),
+          onboarding_complete: true,
+        })
+        .eq('id', session.user.id)
+        .select('id')
+        .single();
+      if (profileError || !updatedProfile) throw profileError ?? new Error('Profile was not updated.');
 
-    await supabase
-      .from('profiles')
-      .update({
-        full_name: fullName.trim(),
-        age: ageNumber,
-        invite_code: generateInviteCode(),
-        onboarding_complete: true,
-      })
-      .eq('id', session.user.id);
+      const { error: sensoryError } = await supabase.from('sensory_profiles').upsert({
+        user_id: session.user.id,
+        top_triggers: selectedTriggers,
+        notes: notes.trim() || null,
+      }, { onConflict: 'user_id' });
+      if (sensoryError) throw sensoryError;
 
-    await supabase.from('sensory_profiles').upsert({
-      user_id: session.user.id,
-      top_triggers: selectedTriggers,
-      notes: notes.trim() || null,
-    });
-
-    await refreshProfile();
-    setSaving(false);
-    onComplete();
+      await refreshProfile();
+      onComplete();
+    } catch (saveError) {
+      console.warn('Profile setup save failed', saveError);
+      setError("We couldn't save your profile. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -140,6 +149,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
+    color: colors.text,
   },
   textArea: { minHeight: 80, textAlignVertical: 'top' },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
